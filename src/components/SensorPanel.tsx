@@ -11,6 +11,7 @@ export function SensorPanel() {
     const handleHeadingChange = () => {
         useBoatStore.getState().setHeading(heading);
         publishIMU(0, 0, heading); // x and y are not used in the current implementation
+        publishWind((wind - heading + 360) % 360)
     }
     const handleGPSChange = () => {
         useBoatStore.getState().setPosition(latitude, longitude);
@@ -19,8 +20,9 @@ export function SensorPanel() {
 
     const handleWindChange = () => {
         useBoatStore.getState().setWind(wind);
-        publishWind(wind);
-    };
+        const relativeWind = (wind - heading + 360) % 360; // TODO: Check 
+        publishWind(relativeWind);
+    }
 
     return (
         <div className="p-4 space-y-4 bg-white shadow-md rounded-md">
@@ -82,7 +84,7 @@ export function SensorPanel() {
 
             {/* Wind */}
             <div>
-                <label className="block font-medium text-gray-700">Relative Wind Direction</label>
+                <label className="block font-medium text-gray-700">Absolute Wind Direction</label>
                 <input
                     type="range"
                     min={0}

@@ -6,12 +6,14 @@ import { Boat } from './Boat';
 
 import { latLonToXY, xyToLatLon } from '../utils/coordinates';
 import { useBoatStore } from '../state/useBoatStore';
+import { useAlgoStore } from '../state/useAlgoStore';
 import { useWaypointStore } from '../state/useWaypointStore';
 
 import { setWaypointQueue, publishGPS } from '../ros/publishers';
 
 export function BoatCanvas() {
   const { rudderAngle, sailAngle, pose, relativeWind } = useBoatStore();
+  const { tacking, tacking_point, heading_dir, current_dest, diff } = useAlgoStore();
   const { waypoints, setWaypoints } = useWaypointStore();
 
   const [zoom, setZoom] = useState(1);
@@ -36,18 +38,18 @@ export function BoatCanvas() {
   const getRelativeSVGCoords = (e: React.MouseEvent<SVGSVGElement>) => {
     const svg = svgRef.current;
     if (!svg || !svg.getScreenCTM()) return { x: 0, y: 0 };
-  
+
     const point = svg.createSVGPoint();
     point.x = e.clientX;
     point.y = e.clientY;
-  
+
     const transformed = point.matrixTransform(svg.getScreenCTM()!.inverse());
     const adjustedX = (transformed.x - offset.x) / zoom;
     const adjustedY = (transformed.y - offset.y) / zoom;
-  
+
     return { x: adjustedX, y: adjustedY };
   };
-  
+
 
   const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
     const zoomFactor = 1.1;
@@ -134,7 +136,6 @@ export function BoatCanvas() {
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
         className="border border-gray-400 rounded bg-white"
-        onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -170,6 +171,19 @@ export function BoatCanvas() {
               </g>
             );
           })}
+          {
+            tacking && tacking_point && (
+              <line
+                x1={boatX}
+                y1={boatY}
+                x2={latLonToXY(tacking_point.latitude, tacking_point.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).x}
+                y2={latLonToXY(tacking_point.latitude, tacking_point.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).y}
+                stroke="blue"
+                strokeWidth="2"
+              />
+            )
+          }
+
         </g>
         {hoverCoord && (
           <foreignObject x={10} y={10} width={195} height={40}>
