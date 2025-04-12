@@ -8,6 +8,8 @@ interface AlgoState {
     heading_dir: Int32 | null;
     curr_dest: NavSatFix | null;
     diff: Int32 | null;
+    dist_to_dest: Int32 | null;
+    setDistDiff: (value: Int32) => void;
     setTacking: (value: boolean) => void;
     setTackingPoint: (point: NavSatFix) => void;
     setHeadingDir: (dir: Int32) => void;
@@ -21,6 +23,8 @@ export const useAlgoStore = create<AlgoState>((set) => ({
     heading_dir: null,
     curr_dest: null,
     diff: null,
+    dist_to_dest: null,
+    setDistDiff: (value) => set({ dist_to_dest: value }),
     setTacking: (value) => set({ tacking: value }),
     setTackingPoint: (point) => set({ tacking_point: point }),
     setHeadingDir: (dir) => set({ heading_dir: dir }),

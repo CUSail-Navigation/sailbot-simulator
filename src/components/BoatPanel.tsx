@@ -22,6 +22,10 @@ export function BoatPanel() {
             </div>
 
             <div className="mb-4">
+                <strong className="font-medium">Heading:</strong> {pose?.theta || "N/A"}°
+            </div>
+
+            <div className="mb-4">
                 <strong className="font-medium">Relative Wind:</strong> {relativeWind || "N/A"}°
             </div>
 
