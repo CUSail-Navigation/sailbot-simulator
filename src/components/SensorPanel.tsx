@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { debounce } from 'lodash';
 import { publishGPS, publishIMU, publishWind } from '../ros/publishers';
 import { useBoatStore } from '../state/useBoatStore';
 
@@ -8,23 +9,40 @@ export function SensorPanel() {
     const [heading, setHeading] = useState(0); // instant slider value
     const [wind, setWind] = useState(5);
 
-    const handleHeadingChange = () => {
-        useBoatStore.getState().setHeading(heading);
-        publishIMU(0, 0, heading); // x and y are not used in the current implementation
-        publishWind((wind - heading + 360) % 360)
-    }
+    const debouncedHeadingChange = useCallback(
+        debounce((newHeading) => {
+            useBoatStore.getState().setHeading(newHeading);
+            publishIMU(0, 0, newHeading);
+            publishWind((wind - newHeading + 360) % 360);
+        }, 100), // 100ms debounce delay
+        [wind]
+    );
+
+    const debouncedWindChange = useCallback(
+        debounce((newWind) => {
+            useBoatStore.getState().setWind(newWind);
+            const relativeWind = (newWind - heading + 360) % 360;
+            publishWind(relativeWind);
+        }, 100), // 100ms debounce delay
+        [heading]
+    );
+
+    const handleHeadingChange = (value: number) => {
+        setHeading(value);
+        debouncedHeadingChange(value);
+    };
+
+    const handleWindChange = (value: number) => {
+        setWind(value);
+        debouncedWindChange(value);
+    };
+
     const handleGPSChange = () => {
         useBoatStore.getState().setPosition(latitude, longitude);
         publishGPS(latitude, longitude);
-        publishIMU(0, 0, heading); // x and y are not used in the current implementation
-        publishWind((wind - heading + 360) % 360)
+        publishIMU(0, 0, heading);
+        publishWind((wind - heading + 360) % 360);
     };
-
-    const handleWindChange = () => {
-        useBoatStore.getState().setWind(wind);
-        const relativeWind = (wind - heading + 360) % 360; // TODO: Check 
-        publishWind(relativeWind);
-    }
 
     return (
         <div className="p-4 space-y-4 bg-white shadow-md rounded-md">
@@ -32,7 +50,6 @@ export function SensorPanel() {
 
             {/* GPS Controls */}
             <div className="space-y-3 border p-4 rounded-md shadow-sm bg-gray-50">
-
                 <div>
                     <label className="block font-medium text-gray-700">Latitude</label>
                     <input
@@ -63,9 +80,8 @@ export function SensorPanel() {
                 </button>
             </div>
 
-
             {/* IMU */}
-            <div >
+            <div>
                 <label className="block font-medium text-gray-700">Heading (deg)</label>
                 <input
                     type="range"
@@ -73,12 +89,7 @@ export function SensorPanel() {
                     max={360}
                     value={heading}
                     className="w-full"
-                    onChange={(e) => {
-                        const val = parseInt(e.target.value);
-                        setHeading(val);
-                        handleHeadingChange();
-                    }}
-                    // prevent lagging when dragging the slider
+                    onChange={(e) => handleHeadingChange(parseInt(e.target.value))}
                     onDragStart={(e) => e.preventDefault()}
                 />
                 <span className="text-sm text-gray-700">{heading}°</span>
@@ -93,12 +104,7 @@ export function SensorPanel() {
                     max={360}
                     value={wind}
                     className="w-full"
-                    onChange={(e) => {
-                        const val = parseInt(e.target.value);
-                        setWind(val);
-                        handleWindChange();
-                    }}
-                    // prevent lagging when dragging the slider
+                    onChange={(e) => handleWindChange(parseInt(e.target.value))}
                     onDragStart={(e) => e.preventDefault()}
                 />
                 <span className="text-sm text-gray-700">{wind}</span>
