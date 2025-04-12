@@ -1,54 +1,25 @@
-# React + TypeScript + Vite
+# Sailbot Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This simulator is a web-app designed to visualize the behavior of our sailboat. It allows developers to test and visualize our navigation algorithms in a controlled environment with simulated sensor inputs.
 
-Currently, two official plugins are available:
+There is no underlying physics engine. All simulation requires manually adjusting state. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
 
-## Expanding the ESLint configuration
+- Be sure you have [Node.js](https://nodejs.org/) installed (v20.11.1 is what I use, other versions should be OK) 
+- Sailbot code is launchable
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Web-App Setup
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Navigate to the sailbot-simulator project directory
+2. Run `npm install` to install dependencies
+3. Run `npm run dev` to start the local development server
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Sailbot Code Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Navigate to the root of the sailbot directory. 
+2. Start the docker image with ```docker run -it --rm -p 9089:7000 -p 9090:9090 --name ros2_container -v ${PWD}/src:/home/ros2_user/ros2_ws/src ros2_humble_custom``` (for Windows)
+3. Run `ros2 launch sailboat_launch sailboat_simulator.py`
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+NOTE: this is a WIP
+
