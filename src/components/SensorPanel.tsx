@@ -16,6 +16,8 @@ export function SensorPanel() {
     const handleGPSChange = () => {
         useBoatStore.getState().setPosition(latitude, longitude);
         publishGPS(latitude, longitude);
+        publishIMU(0, 0, heading); // x and y are not used in the current implementation
+        publishWind((wind - heading + 360) % 360)
     };
 
     const handleWindChange = () => {

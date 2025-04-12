@@ -1,4 +1,3 @@
-import React from "react";
 import { useAlgoStore } from "../state/useAlgoStore";
 
 export function AlgoPanel() {
