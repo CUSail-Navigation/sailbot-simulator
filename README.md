@@ -18,7 +18,7 @@ There is no underlying physics engine. All simulation requires manually adjustin
 ## Sailboat Code Setup
 
 1. Navigate to the root of the sailbot directory. 
-2. Start the docker image with ```docker run -it --rm -p 9089:7000 -p 9090:9090 --name ros2_container -v ${PWD}/src:/home/ros2_user/ros2_ws/src ros2_humble_custom```
+2. On windows, start the docker image with ```docker run -it --rm -p 9089:7000 -p 9090:9090 --name ros2_container -v ${PWD}/src:/home/ros2_user/ros2_ws/src ros2_humble_custom``` (check [ROS setup](https://cusail-navigation.github.io/intrasite/ros/rossetup.html) for your OS-specific command)
 3. Run `ros2 launch sailboat_launch sailboat_algo_sim.launch.py`
 
 
