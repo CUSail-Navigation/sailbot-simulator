@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { debounce } from 'lodash';
 import { publishGPS, publishIMU, publishWind } from '../ros/publishers';
 import { useBoatStore } from '../state/useBoatStore';
@@ -6,30 +6,39 @@ import { useBoatStore } from '../state/useBoatStore';
 export function SensorPanel() {
     const [latitude, setLatitude] = useState(46.5005);
     const [longitude, setLongitude] = useState(-76.5005);
-    const [heading, setHeading] = useState(0); // instant slider value
+    const [heading, setHeading] = useState(0); 
     const [wind, setWind] = useState(5);
 
     const debouncedHeadingChange = useCallback(
         debounce((newHeading) => {
-            useBoatStore.getState().setHeading(newHeading);
+            useBoatStore.getState().setHeading(newHeading); 
+            if (newHeading === 0) {
+                console.log("Heading is 0 — skipping publish");
+                return;
+            }
             publishIMU(0, 0, newHeading);
             publishWind((wind - newHeading + 360) % 360);
-        }, 100), // 100ms debounce delay
+        }, 100),
         [wind]
     );
-
+    
     const debouncedWindChange = useCallback(
         debounce((newWind) => {
-            useBoatStore.getState().setWind(newWind);
+            useBoatStore.getState().setWind(newWind); 
+            if (newWind === 0) {
+                console.log("Wind is 0 — skipping publish");
+                return;
+            }
             const relativeWind = (newWind - heading + 360) % 360;
             publishWind(relativeWind);
-        }, 100), // 100ms debounce delay
+        }, 100),
         [heading]
     );
+    
 
     const handleHeadingChange = (value: number) => {
-        setHeading(value);
-        debouncedHeadingChange(value);
+        setHeading(value); 
+        debouncedHeadingChange(value); 
     };
 
     const handleWindChange = (value: number) => {
@@ -107,7 +116,7 @@ export function SensorPanel() {
                     onChange={(e) => handleWindChange(parseInt(e.target.value))}
                     onDragStart={(e) => e.preventDefault()}
                 />
-                <span className="text-sm text-gray-700">{wind}</span>
+                <span className="text-sm text-gray-700">{wind}°</span>
             </div>
         </div>
     );
