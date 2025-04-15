@@ -6,39 +6,32 @@ import { useBoatStore } from '../state/useBoatStore';
 export function SensorPanel() {
     const [latitude, setLatitude] = useState(46.5005);
     const [longitude, setLongitude] = useState(-76.5005);
-    const [heading, setHeading] = useState(0); 
+    const [heading, setHeading] = useState(0);
     const [wind, setWind] = useState(5);
 
     const debouncedHeadingChange = useCallback(
         debounce((newHeading) => {
-            useBoatStore.getState().setHeading(newHeading); 
-            if (newHeading === 0) {
-                console.log("Heading is 0 — skipping publish");
-                return;
-            }
+            useBoatStore.getState().setHeading(newHeading);
+            console.log(newHeading)
             publishIMU(0, 0, newHeading);
             publishWind((wind - newHeading + 360) % 360);
         }, 100),
         [wind]
     );
-    
+
     const debouncedWindChange = useCallback(
         debounce((newWind) => {
-            useBoatStore.getState().setWind(newWind); 
-            if (newWind === 0) {
-                console.log("Wind is 0 — skipping publish");
-                return;
-            }
+            useBoatStore.getState().setWind(newWind);
             const relativeWind = (newWind - heading + 360) % 360;
             publishWind(relativeWind);
         }, 100),
         [heading]
     );
-    
+
 
     const handleHeadingChange = (value: number) => {
-        setHeading(value); 
-        debouncedHeadingChange(value); 
+        setHeading(value);
+        debouncedHeadingChange(value);
     };
 
     const handleWindChange = (value: number) => {

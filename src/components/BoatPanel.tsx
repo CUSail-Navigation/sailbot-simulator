@@ -8,29 +8,29 @@ export function BoatPanel() {
             <h2 className="text-2xl font-bold text-gray-800">⛵ Boat State</h2>
 
             <div className="mb-4">
-                <strong className="font-medium">Sail Angle:</strong> {sailAngle || "N/A"}
+                <strong className="font-medium">Sail Angle:</strong> {sailAngle}
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Rudder Angle:</strong> {rudderAngle || "N/A"}
+                <strong className="font-medium">Rudder Angle:</strong> {rudderAngle}
             </div>
 
             <div className="mb-4">
                 <strong className="font-medium">Location:</strong>
-                <div>Latitude: {pose?.latitude || "N/A"}</div>
-                <div>Longitude: {pose?.longitude || "N/A"}</div>
+                <div>Latitude: {pose?.latitude}</div>
+                <div>Longitude: {pose?.longitude}</div>
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Heading:</strong> {pose?.theta || "N/A"}°
+                <strong className="font-medium">Heading:</strong> {pose?.theta}°
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Relative Wind:</strong> {relativeWind || "N/A"}°
+                <strong className="font-medium">Relative Wind:</strong> {relativeWind}°
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Ros Connected:</strong> {rosConnected || "N/A"}
+                <strong className="font-medium">Ros Connected:</strong> {rosConnected}
             </div>
         </div>
     );

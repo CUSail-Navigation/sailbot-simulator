@@ -13,22 +13,22 @@ export function AlgoPanel() {
 
             <div className="mb-4">
                 <strong className="font-medium">Tacking Point:</strong>
-                <div>Latitude: {tacking_point?.latitude || "N/A"}</div>
-                <div>Longitude: {tacking_point?.longitude || "N/A"}</div>
+                <div>Latitude: {tacking_point?.latitude}</div>
+                <div>Longitude: {tacking_point?.longitude}</div>
             </div>
 
             <div className="mb-4">
                 <strong className="font-medium">Current Destination:</strong>
-                <div>Latitude: {curr_dest?.latitude || "N/A"}</div>
-                <div>Longitude: {curr_dest?.longitude || "N/A"}</div>
+                <div>Latitude: {curr_dest?.latitude}</div>
+                <div>Longitude: {curr_dest?.longitude}</div>
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Angle Difference:</strong> {diff?.data || "N/A"}
+                <strong className="font-medium">Angle Difference:</strong> {diff?.data}
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Distance Difference:</strong> {dist_to_dest?.data || "N/A"}
+                <strong className="font-medium">Distance Difference:</strong> {dist_to_dest?.data}
             </div>
         </div>
     );
