@@ -30,7 +30,7 @@ export function BoatPanel() {
             </div>
 
             <div className="mb-4">
-                <strong className="font-medium">Ros Connected:</strong> {rosConnected}
+                <strong className="font-medium">Ros Connected:</strong> {rosConnected ? "Yes" : "No"}
             </div>
         </div>
     );

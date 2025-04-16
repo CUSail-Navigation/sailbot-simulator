@@ -1,7 +1,7 @@
 import { toRadians } from "../utils/coordinates";
 export function OverlayLines({
-    boatX, boatY, boatAngle, rudderAngle, sailAngle, windAngle
-}: { boatX: number; boatY: number; boatAngle: number; rudderAngle: number; sailAngle: number; windAngle: number }) {
+    boatX, boatY, boatAngle, rudderAngle, sailAngle, absoluteWind
+}: { boatX: number; boatY: number; boatAngle: number; rudderAngle: number; sailAngle: number; absoluteWind: number }) {
 
     const drawLine = (offsetAngle: number, color: string) => {
         const angle = toRadians(-boatAngle + offsetAngle);
@@ -11,7 +11,7 @@ export function OverlayLines({
     };
 
     const drawWindArrow = () => {
-        const angle = toRadians(windAngle);
+        const angle = toRadians(absoluteWind);
         const x2 = boatX + 100 * Math.cos(angle);
         const y2 = boatY + 100 * Math.sin(angle);
         return (
@@ -28,7 +28,7 @@ export function OverlayLines({
     };
 
     const drawOppositeTriangle = () => {
-        const baseAngle = toRadians(windAngle + 180); // Opposite direction of the wind
+        const baseAngle = toRadians(absoluteWind + 180); // Opposite direction of the wind
         const leftAngle = baseAngle - toRadians(30); // 30 degrees to the left
         const rightAngle = baseAngle + toRadians(30); // 30 degrees to the right
 

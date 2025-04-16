@@ -11,7 +11,7 @@ interface BoatState {
     setSailAngle: (z: number) => void;
     setPosition: (latitude: number, longitude: number) => void;
     setHeading: (theta: number) => void;
-    setWind: (wind: number) => void;
+    setRelativeWind: (wind: number) => void;
 }
 
 export const useBoatStore = create<BoatState>((set) => ({
@@ -25,5 +25,5 @@ export const useBoatStore = create<BoatState>((set) => ({
     setSailAngle: (z) => set({ sailAngle: z }),
     setPosition: (latitude, longitude) => set((state) => ({ pose: { ...state.pose, latitude, longitude } })),
     setHeading: (theta) => set((state) => ({ pose: { ...state.pose, theta } })),
-    setWind: (wind) => set({ relativeWind: wind }),
+    setRelativeWind: (wind) => set({ relativeWind: wind }),
 }));

@@ -8,12 +8,14 @@ import { latLonToXY, xyToLatLon } from '../utils/coordinates';
 import { useBoatStore } from '../state/useBoatStore';
 import { useAlgoStore } from '../state/useAlgoStore';
 import { useWaypointStore } from '../state/useWaypointStore';
+import { useEnvironmentStore } from '../state/useEnvironmentStore';
 
 import { setWaypointQueue, publishGPS } from '../ros/publishers';
 
 export function BoatCanvas() {
   const { rudderAngle, sailAngle, pose, relativeWind } = useBoatStore();
   const { tacking, tacking_point, heading_dir, current_dest, diff } = useAlgoStore();
+  const { absoluteWind } = useEnvironmentStore();
   const { waypoints, setWaypoints } = useWaypointStore();
 
   const [zoom, setZoom] = useState(1);
@@ -48,16 +50,6 @@ export function BoatCanvas() {
     const adjustedY = (transformed.y - offset.y) / zoom;
 
     return { x: adjustedX, y: adjustedY };
-  };
-
-
-  const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
-    const zoomFactor = 1.1;
-    const direction = e.deltaY > 0 ? -1 : 1;
-    setZoom((prevZoom) => {
-      const nextZoom = direction > 0 ? prevZoom * zoomFactor : prevZoom / zoomFactor;
-      return Math.min(Math.max(nextZoom, 0.1), 10);
-    });
   };
 
   const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -158,7 +150,7 @@ export function BoatCanvas() {
             boatAngle={boatAngle}
             rudderAngle={rudderAngle}
             sailAngle={sailAngle}
-            windAngle={relativeWind}
+            absoluteWind={absoluteWind}
           />
           {waypoints.map((wp, index) => {
             const { x, y } = latLonToXY(wp.latitude, wp.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT);

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { debounce } from 'lodash';
 import { publishGPS, publishIMU, publishWind } from '../ros/publishers';
 import { useBoatStore } from '../state/useBoatStore';
+import { useEnvironmentStore } from '../state/useEnvironmentStore';
 
 export function SensorPanel() {
     const [latitude, setLatitude] = useState(46.5005);
@@ -12,17 +13,25 @@ export function SensorPanel() {
     const debouncedHeadingChange = useCallback(
         debounce((newHeading) => {
             useBoatStore.getState().setHeading(newHeading);
-            console.log(newHeading)
             publishIMU(0, 0, newHeading);
-            publishWind((wind - newHeading + 360) % 360);
+
+            // calculate relative wind, then publish it
+            const relativeWind = (wind - newHeading + 360) % 360;
+            console.log(relativeWind)
+            useBoatStore.getState().setRelativeWind(relativeWind);
+            publishWind(relativeWind);
         }, 100),
         [wind]
     );
 
     const debouncedWindChange = useCallback(
         debounce((newWind) => {
-            useBoatStore.getState().setWind(newWind);
+            // set absolute wind first
+            useEnvironmentStore.getState().setAbsoluteWind(-newWind);
+
+            // calculate relative wind, then publish it
             const relativeWind = (newWind - heading + 360) % 360;
+            useBoatStore.getState().setRelativeWind(relativeWind);
             publishWind(relativeWind);
         }, 100),
         [heading]
