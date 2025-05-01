@@ -164,11 +164,13 @@ export function BoatCanvas() {
             );
           })}
           {current_dest && (
-            <circle
-              cx={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).x}
-              cy={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).y}
-              r={5}
-              fill="green"
+            <line
+              x1={boatX}
+              y1={boatY}
+              x2={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).x}
+              y2={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).y}
+              stroke="green"
+              strokeWidth="2"
             />
           )}
           {
