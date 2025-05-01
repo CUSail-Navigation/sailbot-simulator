@@ -163,6 +163,14 @@ export function BoatCanvas() {
               </g>
             );
           })}
+          {current_dest && (
+            <circle
+              cx={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).x}
+              cy={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).y}
+              r={5}
+              fill="green"
+            />
+          )}
           {
             tacking && tacking_point && (
               <line
