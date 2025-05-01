@@ -24,6 +24,7 @@ export function startROSSubscriptions() {
     });
 
     sailTopic.subscribe((msg) => {
+        console.log(msg.data);
         useBoatStore.getState().setSailAngle(msg.data);
     });
 

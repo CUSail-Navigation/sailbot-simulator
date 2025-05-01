@@ -51,7 +51,7 @@ export function OverlayLines({
 
     return (
         <>
-            {drawLine(rudderAngle, 'red')}
+            {drawLine(-rudderAngle, 'red')}
             {drawLine(sailAngle, 'gold')}
             {drawWindArrow()}
             {drawOppositeTriangle()}
