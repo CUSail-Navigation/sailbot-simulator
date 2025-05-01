@@ -3,6 +3,8 @@ import { useBoatStore } from "../state/useBoatStore";
 export function BoatPanel() {
     const { rudderAngle, sailAngle, pose, relativeWind, rosConnected } = useBoatStore();
 
+    // console.log(rudderAngle);
+
     return (
         <div className="p-4 space-y-4 text-gray-700 bg-white shadow-md rounded-md">
             <h2 className="text-2xl font-bold text-gray-800">⛵ Boat State</h2>

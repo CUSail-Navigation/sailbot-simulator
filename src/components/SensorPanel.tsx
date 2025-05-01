@@ -17,7 +17,6 @@ export function SensorPanel() {
 
             // calculate relative wind, then publish it
             const relativeWind = (wind - newHeading + 360) % 360;
-            console.log(relativeWind)
             useBoatStore.getState().setRelativeWind(relativeWind);
             publishWind(relativeWind);
         }, 100),

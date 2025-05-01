@@ -9,7 +9,7 @@ import { setWaypointQueue } from './publishers';
 export function startROSSubscriptions() {
     const rudderTopic = new ROSLIB.Topic({
         ros,
-        name: 'sailbot/rudder_angle',
+        name: 'sailbot/algo_rudder',
         messageType: 'std_msgs/Int32',
     });
 
@@ -19,7 +19,7 @@ export function startROSSubscriptions() {
 
     const sailTopic = new ROSLIB.Topic({
         ros,
-        name: 'sailbot/sail', // TODO: find the right sail topic
+        name: 'sailbot/algo_sail', // TODO: find the right sail topic
         messageType: 'std_msgs/Int32',
     });
 
@@ -50,6 +50,7 @@ export function startROSSubscriptions() {
     });
 
     current_waypoint.subscribe((msg) => {
+        console.log("executed getWaypointQueue");
         getWaypointQueue();
     })
 }
@@ -83,6 +84,7 @@ export function getWaypointQueue() {
 
             // Remove all undefined values from the waypoints array
             const filteredWaypoints = waypoints.filter((waypoint) => waypoint !== undefined);
+            console.log(filteredWaypoints)
             useWaypointStore.getState().setWaypoints(filteredWaypoints); // Set the waypoints in the store
         }
     });
