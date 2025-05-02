@@ -14,7 +14,7 @@ import { setWaypointQueue, publishGPS } from '../ros/publishers';
 
 export function BoatCanvas() {
   const { rudderAngle, sailAngle, pose, relativeWind } = useBoatStore();
-  const { tacking, tacking_point, heading_dir, current_dest, diff } = useAlgoStore();
+  const { tacking, tacking_point, heading_dir, curr_dest, diff } = useAlgoStore();
   const { absoluteWind } = useEnvironmentStore();
   const { waypoints, setWaypoints } = useWaypointStore();
 
@@ -27,6 +27,7 @@ export function BoatCanvas() {
 
   const svgRef = useRef<SVGSVGElement>(null);
 
+  console.log(curr_dest);
   const bounds = {
     latMin: 46.500000,
     latMax: 46.501000,
@@ -163,17 +164,18 @@ export function BoatCanvas() {
               </g>
             );
           })}
-          {current_dest && (
-            <line
-              x1={boatX}
-              y1={boatY}
-              x2={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).x}
-              y2={latLonToXY(current_dest.latitude, current_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).y}
-              stroke="green"
-              strokeWidth="2"
-            />
-          )}
           {
+            curr_dest && (
+              <line
+                x1={boatX}
+                y1={boatY}
+                x2={latLonToXY(curr_dest.latitude, curr_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).x}
+                y2={latLonToXY(curr_dest.latitude, curr_dest.longitude, bounds, CANVAS_WIDTH, CANVAS_HEIGHT).y}
+                stroke="green"
+                strokeWidth="2"
+              />
+            )}
+          {/* {
             tacking && tacking_point && (
               <line
                 x1={boatX}
@@ -184,7 +186,7 @@ export function BoatCanvas() {
                 strokeWidth="2"
               />
             )
-          }
+          } */}
 
         </g>
         {hoverCoord && (
