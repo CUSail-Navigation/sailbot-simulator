@@ -27,7 +27,6 @@ export function BoatCanvas() {
 
   const svgRef = useRef<SVGSVGElement>(null);
 
-  console.log(curr_dest);
   const bounds = {
     latMin: 46.500000,
     latMax: 46.501000,
