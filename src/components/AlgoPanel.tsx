@@ -11,11 +11,11 @@ export function AlgoPanel() {
                 <strong className="font-medium">Tacking:</strong> {tacking ? "Yes" : "No"}
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <strong className="font-medium">Tacking Point:</strong>
                 <div>Latitude: {tacking_point?.latitude}</div>
                 <div>Longitude: {tacking_point?.longitude}</div>
-            </div>
+            </div> */}
 
             <div className="mb-4">
                 <strong className="font-medium">Current Destination:</strong>
